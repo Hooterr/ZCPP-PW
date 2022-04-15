@@ -9,11 +9,19 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    emptytile.cpp \
+    filledtile.cpp \
+    game.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    tile.cpp
 
 HEADERS += \
-    mainwindow.h
+    emptytile.h \
+    filledtile.h \
+    game.h \
+    mainwindow.h \
+    tile.h
 
 FORMS += \
     mainwindow.ui
