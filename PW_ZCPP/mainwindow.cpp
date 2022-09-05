@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <game.h>
+#include <stdlib.h>
 
 struct Pos { int row = -1, col = -1; };
 
@@ -20,10 +21,12 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    setFixedSize(1200,600);
     ui->setupUi(this);
     ui->sizerEdit->setText(QString::number(3));
     setupGame(3);
     connect(ui->startButton, SIGNAL(released()), this, SLOT(startPressed()));
+    connect(ui->loadImageButton, SIGNAL(released()), this, SLOT(loadImage()));
 }
 
 MainWindow::~MainWindow()
@@ -57,6 +60,27 @@ void MainWindow::setupGame(const int size) {
         }
         //delete ui->mainGrid->layout();
     }
+    QString filePath = ui->imagePath->text();
+    bool hasImage = filePath.length() > 0;
+
+    ui->mainGrid->setHorizontalSpacing(hasImage ? 0 : 10);
+    ui->mainGrid->setVerticalSpacing(hasImage ? 0 : 10);
+
+    QPixmap pixmap(filePath);
+
+    int layoutWidth = ui->imagePreview->width();
+    int layoutHeight = ui->imagePreview->height();
+    int buttonWidth = 1.0f / size * layoutWidth;
+    int buttonHeight = 1.0f / size * layoutHeight;
+
+    int offsetX = 0, offsetY = 0;
+
+    if (hasImage) {
+        pixmap = pixmap.scaled(layoutWidth, layoutHeight, Qt::KeepAspectRatioByExpanding);
+
+        offsetX = std::abs(pixmap.width() - layoutWidth) / 2;
+        offsetY = std::abs(pixmap.height() - layoutHeight) / 2;
+    }
 
     for(auto it = game->getElementsBegin(); it != end; it++)
     {
@@ -64,8 +88,21 @@ void MainWindow::setupGame(const int size) {
         if (!element->isEmpty()){
 
             const int sequenceNumber = element->getSequence();
-            QPushButton *button = new QPushButton(QString::number(sequenceNumber));
+            QPushButton *button = new QPushButton();
             button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            if (hasImage) {
+                QPalette palette;
+                palette.setBrush(button->backgroundRole(),
+                                 QBrush(pixmap.copy(((sequenceNumber - 1) % size) * buttonWidth + offsetX,
+                                                    (sequenceNumber - 1)/ size * buttonHeight + offsetY, buttonWidth, buttonHeight)));
+                button->setFlat(true);
+                button->setAutoFillBackground(true);
+                button->setPalette(palette);
+            }
+            else {
+                button->setText(QString::number(sequenceNumber));
+            }
+
             ui->mainGrid->addWidget(button, row, col);
             connect(button, SIGNAL(released()), this, SLOT(tilePressed()));
         }
@@ -77,7 +114,6 @@ void MainWindow::setupGame(const int size) {
 }
 
 void MainWindow::tilePressed(){
-    // QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open File"),"/path/to/file/",tr("Mp3 Files (*.png)"));
     QPushButton *button = (QPushButton *)sender();
     Pos p = gridPosition(button, ui->mainGrid);
 
@@ -92,6 +128,21 @@ void MainWindow::tilePressed(){
             QMessageBox::information(this, "Congrats", "You win!");
         }
     }
+}
+
+
+void MainWindow::loadImage() {
+    QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open image file"),"/path/to/file/",tr("JPG Files (*.jpg)"));
+
+    if (fileNames.length() <= 0 ){
+        return;
+    }
+
+    ui->imagePath->setText(fileNames[0]);
+    QString filePath = fileNames[0];
+    QPixmap pixmap(filePath);
+    pixmap = pixmap.scaled(ui->imagePreview->width(), ui->imagePreview->height(), Qt::KeepAspectRatioByExpanding);
+    ui->imagePreview->setPixmap(pixmap);
 }
 
 

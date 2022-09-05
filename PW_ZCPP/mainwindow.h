@@ -35,5 +35,6 @@ private slots:
 
     void tilePressed();
     void startPressed();
+    void loadImage();
 };
 #endif // MAINWINDOW_H
