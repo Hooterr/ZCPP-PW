@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QDialog>
 #include <algorithm>
-
+#include <game.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,7 +18,6 @@ class QMenuBar;
 class QPushButton;
 class QTextEdit;
 QT_END_NAMESPACE
-const int NumGridRows = 5;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -29,9 +28,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Game* game = nullptr;
+    void setupGame(const int size);
 
-    QLabel *labels[NumGridRows];
-    QLineEdit *lineEdits[NumGridRows];
-    QGroupBox *gridGroupBox;
+private slots:
+
+    void tilePressed();
+    void startPressed();
 };
 #endif // MAINWINDOW_H

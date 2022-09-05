@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -27,10 +27,10 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="sizerEdit">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>190</x>
       <y>20</y>
       <width>41</width>
       <height>24</height>

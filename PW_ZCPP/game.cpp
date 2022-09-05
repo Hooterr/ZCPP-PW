@@ -4,8 +4,7 @@
 #include <algorithm>
 #include <time.h>
 
-Game::Game(int size) :
-    _size(size)
+Game::Game(int size) : _size(size)
 {
     int sequence = 1;
     const int totalCount = _size * _size;
@@ -48,6 +47,10 @@ bool Game::move(int row, int col) {
     }
 
     std::swap(_board[row * _size + col], _board[_emptyTileRow * _size + _emptyTileCol]);
+
+    _emptyTileCol = col;
+    _emptyTileRow = row;
+
     updateGameFinished();
     return true;
 }
