@@ -5,9 +5,8 @@
 
 struct Pos { int row = -1, col = -1; };
 
-Pos gridPosition(QWidget * widget) {
+Pos gridPosition(QWidget * widget, QGridLayout *layout) {
   if (! widget->parentWidget()) return {};
-  auto layout = qobject_cast<QGridLayout*>(widget->parentWidget()->layout());
   if (! layout) return {};
   int index = layout->indexOf(widget);
   Q_ASSERT(index >= 0);
@@ -80,7 +79,7 @@ void MainWindow::setupGame(const int size) {
 void MainWindow::tilePressed(){
     // QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open File"),"/path/to/file/",tr("Mp3 Files (*.png)"));
     QPushButton *button = (QPushButton *)sender();
-    Pos p = gridPosition(button);
+    Pos p = gridPosition(button, ui->mainGrid);
 
     const int emptyTileRow = game->getEmptyTileRow();
     const int emptyTileCol = game->getEmptyTileCol();
