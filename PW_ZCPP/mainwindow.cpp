@@ -78,9 +78,7 @@ void MainWindow::setupGame(const int size) {
 }
 
 void MainWindow::tilePressed(){
-    QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open File"),"/path/to/file/",tr("Mp3 Files (*.png)"));
-
-
+    // QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open File"),"/path/to/file/",tr("Mp3 Files (*.png)"));
     QPushButton *button = (QPushButton *)sender();
     Pos p = gridPosition(button);
 
