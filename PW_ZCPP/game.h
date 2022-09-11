@@ -20,7 +20,7 @@ public :
      * @brief Destroy the Game object
      * 
      */
-    ~Game(){
+    ~Game() {
     }
 
     /**
@@ -61,6 +61,15 @@ public :
     }
 
     /**
+     * @brief Gets the number of moves that the user has made in this game
+     *
+     * @return number of moves
+     */
+    int getNumberOfMoves() const {
+        return _numberOfMoves;
+    }
+
+    /**
      * @brief Moves the specific element on the board
      * 
      * @param row 0-based row index of the element
@@ -95,7 +104,7 @@ private:
     std::vector<ITile *> _board;
     int _emptyTileRow;
     int _emptyTileCol;
-
+    int _numberOfMoves;
     void updateGameFinished();
 };
 

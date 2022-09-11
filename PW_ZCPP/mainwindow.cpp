@@ -113,6 +113,7 @@ void MainWindow::setupGame(const int size) {
     }
 }
 
+
 void MainWindow::tilePressed(){
     QPushButton *button = (QPushButton *)sender();
     Pos p = gridPosition(button, ui->mainGrid);
@@ -124,8 +125,9 @@ void MainWindow::tilePressed(){
         delete ui->mainGrid->takeAt(idx);
         ui->mainGrid->addWidget(button, emptyTileRow, emptyTileCol);
 
+
         if (game->getIsFinished()) {
-            QMessageBox::information(this, "Congrats", "You win!");
+            QMessageBox::information(this, "Congrats", "You win in " + QString::number(game->getNumberOfMoves()) + " moves.");
         }
     }
 }

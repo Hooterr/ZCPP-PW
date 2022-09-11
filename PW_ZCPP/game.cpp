@@ -6,6 +6,7 @@
 
 Game::Game(int size) : _size(size)
 {
+    _numberOfMoves = 0;
     int sequence = 1;
     const int totalCount = _size * _size;
     ITile *emptyTile = (ITile*)new EmptyTile();
@@ -16,8 +17,8 @@ Game::Game(int size) : _size(size)
         else {
             _board.push_back((ITile *) new FilledTile(sequence++));
         }
-
     }
+
     srand(time(0));
     std::random_shuffle(_board.begin(), _board.end());
 
@@ -50,8 +51,9 @@ bool Game::move(int row, int col) {
 
     _emptyTileCol = col;
     _emptyTileRow = row;
-
+    _numberOfMoves++;
     updateGameFinished();
+
     return true;
 }
 
